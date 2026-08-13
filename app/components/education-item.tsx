@@ -1,8 +1,19 @@
 import type { Education } from "@/app/data/portfolio";
 
-export function EducationItem({ item }: { item: Education }) {
+type EducationItemProps = {
+  item: Education;
+  view?: "list" | "cards";
+};
+
+export function EducationItem({ item, view = "list" }: EducationItemProps) {
   return (
-    <article className="py-7 sm:py-8">
+    <article
+      className={
+        view === "cards"
+          ? "rounded-xl border border-border bg-surface p-5 sm:p-6"
+          : "py-6 sm:py-7"
+      }
+    >
       <div className="flex flex-col gap-1 sm:flex-row sm:items-start sm:justify-between sm:gap-6">
         <div>
           <h3 className="text-sm font-medium">{item.degree}</h3>

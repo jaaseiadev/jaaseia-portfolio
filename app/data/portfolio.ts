@@ -115,17 +115,6 @@ export const portfolio = {
         "Continuous study through building, reading, open-source work, and close observation of well-made digital products.",
     },
   ] satisfies Education[],
-  about: [
-    "I enjoy working at the point where design and engineering meet. That means thinking through the product model, shaping the interface, and staying close enough to the code to make the final experience feel intentional.",
-    "Away from the screen, you can usually find me reading, making coffee, or collecting references from print, architecture, and everyday objects.",
-  ],
-  skills: [
-    "TypeScript & React",
-    "Next.js & Node.js",
-    "Interface design",
-    "Design systems",
-    "Accessibility",
-  ],
   socials: [
     {
       label: "GitHub",

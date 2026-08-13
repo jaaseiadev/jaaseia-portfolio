@@ -7,9 +7,10 @@ import { useHydrated } from "@/app/components/use-hydrated";
 type ExperimentCardProps = {
   experiment: Experiment;
   index: number;
+  view?: "list" | "cards";
 };
 
-export function ExperimentCard({ experiment, index }: ExperimentCardProps) {
+export function ExperimentCard({ experiment, index, view = "cards" }: ExperimentCardProps) {
   const hydrated = useHydrated();
   const reduceMotion = useReducedMotion();
   const shouldAnimate = hydrated && !reduceMotion;
@@ -24,21 +25,44 @@ export function ExperimentCard({ experiment, index }: ExperimentCardProps) {
       whileInView={shouldAnimate ? { opacity: 1, y: 0 } : undefined}
       viewport={{ once: true, amount: 0.4 }}
       transition={{ duration: 0.4, delay: index * 0.05 }}
-      whileHover={shouldAnimate ? { y: -2 } : undefined}
-      className="group flex min-h-40 flex-col justify-between rounded-lg border border-border bg-surface p-5"
+      whileHover={shouldAnimate && view === "cards" ? { y: -2 } : undefined}
+      className={
+        view === "cards"
+          ? "group flex min-h-40 flex-col justify-between rounded-xl border border-border bg-surface p-5"
+          : "group flex items-start justify-between gap-5 py-5"
+      }
     >
-      <div className="flex items-start justify-between gap-4">
-        <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-faint">
-          {experiment.tag}
-        </span>
-        <span className="text-sm text-faint transition-all duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-foreground">
-          ↗
-        </span>
-      </div>
-      <div>
-        <h3 className="text-sm font-medium">{experiment.name}</h3>
-        <p className="mt-2 text-xs leading-5 text-muted">{experiment.description}</p>
-      </div>
+      {view === "cards" ? (
+        <>
+          <div className="flex items-start justify-between gap-4">
+            <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-faint">
+              {experiment.tag}
+            </span>
+            <span className="text-sm text-faint transition-all duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-foreground">
+              ↗
+            </span>
+          </div>
+          <div>
+            <h3 className="text-sm font-medium">{experiment.name}</h3>
+            <p className="mt-2 text-xs leading-5 text-muted">{experiment.description}</p>
+          </div>
+        </>
+      ) : (
+        <>
+          <div>
+            <span className="mb-2 block font-mono text-[10px] uppercase tracking-[0.12em] text-faint">
+              {experiment.tag}
+            </span>
+            <h3 className="text-sm font-medium">{experiment.name}</h3>
+            <p className="mt-1.5 max-w-[520px] text-xs leading-5 text-muted">
+              {experiment.description}
+            </p>
+          </div>
+          <span className="text-sm text-faint transition-all duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-foreground">
+            ↗
+          </span>
+        </>
+      )}
     </motion.a>
   );
 }

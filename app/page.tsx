@@ -1,11 +1,12 @@
 import Image from "next/image";
-import { EducationItem } from "@/app/components/education-item";
-import { ExperimentCard } from "@/app/components/experiment-card";
+import {
+  EducationShowcase,
+  ExperimentsShowcase,
+} from "@/app/components/collection-showcases";
 import { GitHubActivitySection } from "@/app/components/github-activity";
 import { GitHubIcon, LinkedInIcon, MailIcon } from "@/app/components/icons";
 import { ProjectsShowcase } from "@/app/components/projects-showcase";
 import { Reveal } from "@/app/components/reveal";
-import { SectionHeading } from "@/app/components/section-heading";
 import { ThemeToggle } from "@/app/components/theme-toggle";
 import { portfolio } from "@/app/data/portfolio";
 
@@ -28,9 +29,6 @@ export default function Home() {
           <div className="flex items-center gap-4 sm:gap-6">
             <a className="nav-link" href="#work">
               Work
-            </a>
-            <a className="nav-link" href="#about">
-              About
             </a>
             <a
               className="nav-link"
@@ -83,62 +81,15 @@ export default function Home() {
         </Reveal>
 
         <Reveal as="section" id="craft" className="section-shell" delay={0.05}>
-          <SectionHeading
-            title="Experiments & small things"
-            description="Small explorations in interaction design, developer tooling, and interface craft."
-          />
-          <div className="grid gap-3 sm:grid-cols-2">
-            {portfolio.experiments.map((experiment, index) => (
-              <ExperimentCard
-                key={experiment.name}
-                experiment={experiment}
-                index={index}
-              />
-            ))}
-          </div>
+          <ExperimentsShowcase experiments={portfolio.experiments} />
         </Reveal>
 
         <Reveal as="section" id="education" className="section-shell" delay={0.05}>
-          <SectionHeading
-            title="Where I learned"
-            description="My academic foundation and the subjects that shaped how I approach technical work."
-          />
-          <div>
-            {portfolio.education.map((item) => (
-              <EducationItem key={`${item.school}-${item.degree}`} item={item} />
-            ))}
-          </div>
-        </Reveal>
-
-        <Reveal as="section" id="about" className="section-shell" delay={0.05}>
-          <SectionHeading title="A little more about me" />
-          <div className="grid gap-10 sm:grid-cols-[1fr_0.7fr] sm:gap-14">
-            <div className="space-y-5 text-[15px] leading-7 text-muted">
-              {portfolio.about.map((paragraph) => (
-                <p key={paragraph}>{paragraph}</p>
-              ))}
-            </div>
-            <div>
-              <p className="mb-4 font-mono text-[11px] uppercase tracking-[0.14em] text-faint">
-                Currently using
-              </p>
-              <ul className="space-y-2.5 text-sm" aria-label="Current skills">
-                {portfolio.skills.map((skill) => (
-                  <li key={skill} className="flex items-center gap-2.5">
-                    <span className="h-px w-3 bg-faint" aria-hidden="true" />
-                    {skill}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
+          <EducationShowcase education={portfolio.education} />
         </Reveal>
 
         <Reveal as="section" id="contact" className="section-shell" delay={0.05}>
-          <SectionHeading
-            title="Find me online"
-            description="Have a project in mind, a question, or just want to say hello? My inbox is open."
-          />
+          <h2 className="editorial-heading mb-7 sm:mb-8">socials.</h2>
           <div>
             {portfolio.socials.map((social) => {
               const Icon = socialIcons[social.label as keyof typeof socialIcons];
