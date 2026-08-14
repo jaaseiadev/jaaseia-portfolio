@@ -52,11 +52,11 @@ export function ProjectCard({ project, index, view = "list" }: ProjectCardProps)
       }
     >
       <div className="mb-1 flex items-start justify-between gap-3">
-        <h3 className="text-xl font-medium tracking-[-0.025em]">{project.name}</h3>
+        <h3 className="text-base font-medium tracking-[-0.02em]">{project.name}</h3>
         {view === "list" ? projectLinks : null}
       </div>
 
-      <p className="max-w-[560px] text-sm leading-6 text-muted">{project.description}</p>
+      <p className="max-w-[560px] text-[13px] leading-5 text-muted">{project.description}</p>
 
       {view === "cards" ? (
         <div className="mt-auto flex flex-col gap-4 pt-6">

@@ -16,10 +16,22 @@ import { ThemeToggle } from "@/app/components/theme-toggle";
 import { portfolio } from "@/app/data/portfolio";
 
 const socialIcons = {
-  GitHub: GitHubIcon,
-  LinkedIn: LinkedInIcon,
-  Facebook: FacebookIcon,
-  Email: MailIcon,
+  GitHub: {
+    icon: GitHubIcon,
+    color: "text-[#181717] dark:text-[#f0f0f0]",
+  },
+  LinkedIn: {
+    icon: LinkedInIcon,
+    color: "text-[#0A66C2]",
+  },
+  Facebook: {
+    icon: FacebookIcon,
+    color: "text-[#1877F2]",
+  },
+  Email: {
+    icon: MailIcon,
+    color: "text-[#EA4335]",
+  },
 };
 
 export default function Home() {
@@ -98,7 +110,8 @@ export default function Home() {
           <h2 className="editorial-heading mb-3">Socials.</h2>
           <div className="divide-y divide-border">
             {portfolio.socials.map((social) => {
-              const Icon = socialIcons[social.label as keyof typeof socialIcons];
+              const socialIcon = socialIcons[social.label as keyof typeof socialIcons];
+              const Icon = socialIcon?.icon;
               return (
                 <a
                   key={social.label}
@@ -108,7 +121,7 @@ export default function Home() {
                   className="group flex items-center justify-between py-3 text-sm"
                 >
                   <span className="flex items-center gap-3">
-                    {Icon ? <Icon className="size-4 text-muted" /> : null}
+                    {Icon ? <Icon className={`size-4 ${socialIcon.color}`} /> : null}
                     {social.label}
                   </span>
                   <span className="flex items-center gap-3 text-muted">
