@@ -16,7 +16,7 @@ function CollectionHeader({
   onViewChange: (view: CollectionView) => void;
 }) {
   return (
-    <div className="mb-7 flex items-center justify-between gap-3 sm:mb-8">
+    <div className="mb-3 flex items-center justify-between gap-3">
       <h2 className="editorial-heading">{title}.</h2>
       <ViewSwitch view={view} onChange={onViewChange} label={`${title} view`} />
     </div>
@@ -28,8 +28,8 @@ export function ExperimentsShowcase({ experiments }: { experiments: Experiment[]
 
   return (
     <div>
-      <CollectionHeader title="experiments" view={view} onViewChange={setView} />
-      <div className={view === "cards" ? "grid gap-3 sm:grid-cols-2" : "space-y-1"}>
+      <CollectionHeader title="Crafts" view={view} onViewChange={setView} />
+      <div className={view === "cards" ? "grid gap-3 sm:grid-cols-2" : "divide-y divide-border"}>
         {experiments.map((experiment, index) => (
           <ExperimentCard
             key={experiment.name}
@@ -48,8 +48,8 @@ export function EducationShowcase({ education }: { education: Education[] }) {
 
   return (
     <div>
-      <CollectionHeader title="education" view={view} onViewChange={setView} />
-      <div className={view === "cards" ? "grid gap-3 sm:grid-cols-2" : "space-y-1"}>
+      <CollectionHeader title="Education" view={view} onViewChange={setView} />
+      <div className={view === "cards" ? "grid gap-3 sm:grid-cols-2" : "divide-y divide-border"}>
         {education.map((item) => (
           <EducationItem
             key={`${item.school}-${item.degree}`}

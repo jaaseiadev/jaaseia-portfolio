@@ -11,7 +11,7 @@ export function EducationItem({ item, view = "list" }: EducationItemProps) {
       className={
         view === "cards"
           ? "rounded-xl border border-border bg-surface p-5 sm:p-6"
-          : "py-6 sm:py-7"
+          : "py-4"
       }
     >
       <div className="flex flex-col gap-1 sm:flex-row sm:items-start sm:justify-between sm:gap-6">
@@ -24,7 +24,7 @@ export function EducationItem({ item, view = "list" }: EducationItemProps) {
           <p>{item.location}</p>
         </div>
       </div>
-      <p className="mt-4 max-w-[560px] text-sm leading-6 text-muted">{item.details}</p>
+      <p className="mt-2 max-w-[560px] text-sm leading-6 text-muted">{item.details}</p>
     </article>
   );
 }

@@ -28,33 +28,25 @@ export function ExperimentCard({ experiment, index, view = "cards" }: Experiment
       whileHover={shouldAnimate && view === "cards" ? { y: -2 } : undefined}
       className={
         view === "cards"
-          ? "group flex min-h-40 flex-col justify-between rounded-xl border border-border bg-surface p-5"
-          : "group flex items-start justify-between gap-5 py-5"
+          ? "group relative min-h-32 rounded-xl border border-border bg-surface p-5"
+          : "group flex items-start justify-between gap-5 py-4"
       }
     >
       {view === "cards" ? (
         <>
-          <div className="flex items-start justify-between gap-4">
-            <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-faint">
-              {experiment.tag}
-            </span>
-            <span className="text-sm text-faint transition-all duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-foreground">
-              ↗
-            </span>
-          </div>
-          <div>
+          <div className="pr-7">
             <h3 className="text-sm font-medium">{experiment.name}</h3>
-            <p className="mt-2 text-xs leading-5 text-muted">{experiment.description}</p>
+            <p className="mt-1 text-xs leading-5 text-muted">{experiment.description}</p>
           </div>
+          <span className="absolute right-5 top-5 text-sm text-faint transition-all duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-foreground">
+            ↗
+          </span>
         </>
       ) : (
         <>
           <div>
-            <span className="mb-2 block font-mono text-[10px] uppercase tracking-[0.12em] text-faint">
-              {experiment.tag}
-            </span>
             <h3 className="text-sm font-medium">{experiment.name}</h3>
-            <p className="mt-1.5 max-w-[520px] text-xs leading-5 text-muted">
+            <p className="mt-1 max-w-[520px] text-xs leading-5 text-muted">
               {experiment.description}
             </p>
           </div>

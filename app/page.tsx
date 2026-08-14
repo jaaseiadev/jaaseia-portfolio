@@ -4,7 +4,12 @@ import {
   ExperimentsShowcase,
 } from "@/app/components/collection-showcases";
 import { GitHubActivitySection } from "@/app/components/github-activity";
-import { GitHubIcon, LinkedInIcon, MailIcon } from "@/app/components/icons";
+import {
+  FacebookIcon,
+  GitHubIcon,
+  LinkedInIcon,
+  MailIcon,
+} from "@/app/components/icons";
 import { ProjectsShowcase } from "@/app/components/projects-showcase";
 import { Reveal } from "@/app/components/reveal";
 import { ThemeToggle } from "@/app/components/theme-toggle";
@@ -13,6 +18,7 @@ import { portfolio } from "@/app/data/portfolio";
 const socialIcons = {
   GitHub: GitHubIcon,
   LinkedIn: LinkedInIcon,
+  Facebook: FacebookIcon,
   Email: MailIcon,
 };
 
@@ -34,7 +40,7 @@ export default function Home() {
               className="nav-link"
               href={portfolio.resumeUrl}
             >
-              Resume
+              Education
             </a>
             <ThemeToggle />
           </div>
@@ -47,7 +53,7 @@ export default function Home() {
             <div className="flex items-center gap-3.5">
               <Image
                 src={portfolio.profileImage}
-                alt={`${portfolio.name} profile placeholder`}
+                alt={`Portrait of ${portfolio.name}`}
                 width={80}
                 height={80}
                 priority
@@ -89,8 +95,8 @@ export default function Home() {
         </Reveal>
 
         <Reveal as="section" id="contact" className="section-shell" delay={0.05}>
-          <h2 className="editorial-heading mb-7 sm:mb-8">socials.</h2>
-          <div>
+          <h2 className="editorial-heading mb-3">Socials.</h2>
+          <div className="divide-y divide-border">
             {portfolio.socials.map((social) => {
               const Icon = socialIcons[social.label as keyof typeof socialIcons];
               return (
@@ -99,7 +105,7 @@ export default function Home() {
                   href={social.url}
                   target={social.label === "Email" ? undefined : "_blank"}
                   rel={social.label === "Email" ? undefined : "noreferrer"}
-                  className="group flex items-center justify-between py-4 text-sm"
+                  className="group flex items-center justify-between py-3 text-sm"
                 >
                   <span className="flex items-center gap-3">
                     {Icon ? <Icon className="size-4 text-muted" /> : null}
