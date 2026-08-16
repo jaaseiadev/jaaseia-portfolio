@@ -10,8 +10,8 @@ export function EducationItem({ item, view = "list" }: EducationItemProps) {
     <article
       className={
         view === "cards"
-          ? "rounded-xl border border-border bg-surface p-5 sm:p-6"
-          : "py-4"
+          ? "focus-item rounded-xl border border-border bg-surface p-5 sm:p-6"
+          : "focus-item py-4"
       }
     >
       <div className="flex flex-col gap-1 sm:flex-row sm:items-start sm:justify-between sm:gap-6">

@@ -1,6 +1,10 @@
 "use client";
 
 import { motion, useReducedMotion } from "framer-motion";
+import Image from "next/image";
+import Link from "next/link";
+import { FiGlobe } from "react-icons/fi";
+import { SiGithub } from "react-icons/si";
 import type { Project } from "@/app/data/portfolio";
 import { useHydrated } from "@/app/components/use-hydrated";
 
@@ -20,7 +24,7 @@ export function ProjectCard({ project, index, view = "list" }: ProjectCardProps)
         href={project.githubUrl}
         target="_blank"
         rel="noreferrer"
-        className="text-muted transition-colors hover:text-foreground"
+        className="traveling-link text-muted transition-colors hover:text-foreground"
       >
         GitHub ↗
       </a>
@@ -28,7 +32,7 @@ export function ProjectCard({ project, index, view = "list" }: ProjectCardProps)
         href={project.liveUrl}
         target="_blank"
         rel="noreferrer"
-        className="inline-flex gap-1 text-foreground"
+        className="traveling-link inline-flex gap-1 text-foreground"
       >
         Live site
         <span className="transition-transform duration-200 group-hover:translate-x-1" aria-hidden="true">
@@ -47,30 +51,78 @@ export function ProjectCard({ project, index, view = "list" }: ProjectCardProps)
       transition={{ duration: 0.45, delay: index * 0.06 }}
       className={
         view === "list"
-          ? "group relative py-4"
-          : "group relative flex min-h-72 flex-col rounded-2xl border border-border bg-surface p-5 sm:p-6"
+          ? "focus-item group relative py-4"
+          : "focus-item group relative"
       }
     >
-      <div className="mb-1 flex items-start justify-between gap-3">
-        <h3 className="text-base font-medium tracking-[-0.02em]">{project.name}</h3>
-        {view === "list" ? projectLinks : null}
-      </div>
-
-      <p className="max-w-[560px] text-[13px] leading-5 text-muted">{project.description}</p>
-
       {view === "cards" ? (
-        <div className="mt-auto flex flex-col gap-4 pt-6">
-          <ul className="flex flex-wrap gap-x-3 gap-y-1 font-mono text-[10px] text-faint" aria-label="Technology stack">
-            {project.stack.map((technology) => (
-              <li key={technology}>{technology}</li>
-            ))}
-          </ul>
-          {projectLinks}
-        </div>
-      ) : null}
-      {view === "list" ? (
-        <div className="pointer-events-none absolute inset-x-[-10px] inset-y-2 -z-10 rounded-lg bg-surface opacity-0 transition-opacity duration-200 group-hover:opacity-100" />
-      ) : null}
+        <>
+          <Link
+            href={`/projects/${project.slug}`}
+            className="block aspect-video rounded-xl border border-border bg-surface p-1"
+            aria-label={`View ${project.name} project details`}
+          >
+            <span className="relative block size-full overflow-hidden rounded-lg bg-background">
+              <Image
+                src={project.images[0].src}
+                alt={project.images[0].alt}
+                fill
+                sizes="(max-width: 639px) calc(100vw - 2.5rem), 300px"
+                className="object-cover object-top transition-transform duration-300 group-hover:scale-[1.01]"
+              />
+            </span>
+          </Link>
+
+          <div className="mt-3 flex items-start justify-between gap-3">
+            <h3 className="text-sm font-medium tracking-[-0.02em] sm:text-[15px]">
+              <Link href={`/projects/${project.slug}`} className="traveling-link">
+                {project.name}
+              </Link>
+            </h3>
+
+            <div className="flex shrink-0 items-center gap-3 text-muted">
+              <a
+                href={project.liveUrl}
+                target="_blank"
+                rel="noreferrer"
+                aria-label={`Open ${project.name} live site`}
+                title="Live site"
+                className="transition-colors hover:text-foreground"
+              >
+                <FiGlobe className="size-4" aria-hidden="true" />
+              </a>
+              <a
+                href={project.githubUrl}
+                target="_blank"
+                rel="noreferrer"
+                aria-label={`Open ${project.name} GitHub repository`}
+                title="GitHub repository"
+                className="transition-colors hover:text-foreground"
+              >
+                <SiGithub className="size-4" aria-hidden="true" />
+              </a>
+            </div>
+          </div>
+
+          <p className="mt-1.5 text-[12px] leading-[1.55] text-muted sm:text-[13px]">
+            {project.description}
+          </p>
+        </>
+      ) : (
+        <>
+          <div className="mb-1 flex items-start justify-between gap-3">
+            <h3 className="text-base font-medium tracking-[-0.02em]">
+              <Link href={`/projects/${project.slug}`} className="traveling-link">
+                {project.name}
+              </Link>
+            </h3>
+            {projectLinks}
+          </div>
+
+          <p className="max-w-[560px] text-[13px] leading-5 text-muted">{project.description}</p>
+          <div className="pointer-events-none absolute inset-x-[-10px] inset-y-2 -z-10 rounded-lg bg-surface opacity-0 transition-opacity duration-200 group-hover:opacity-100" />
+        </>
+      )}
     </motion.article>
   );
 }

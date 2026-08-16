@@ -28,14 +28,14 @@ export function ExperimentCard({ experiment, index, view = "cards" }: Experiment
       whileHover={shouldAnimate && view === "cards" ? { y: -2 } : undefined}
       className={
         view === "cards"
-          ? "group relative min-h-32 rounded-xl border border-border bg-surface p-5"
-          : "group flex items-start justify-between gap-5 py-4"
+          ? "focus-item group relative min-h-32 rounded-xl border border-border bg-surface p-5"
+          : "focus-item group flex items-start justify-between gap-5 py-4"
       }
     >
       {view === "cards" ? (
         <>
           <div className="pr-7">
-            <h3 className="text-sm font-medium">{experiment.name}</h3>
+            <h3 className="traveling-link text-sm font-medium">{experiment.name}</h3>
             <p className="mt-1 text-xs leading-5 text-muted">{experiment.description}</p>
           </div>
           <span className="absolute right-5 top-5 text-sm text-faint transition-all duration-200 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-foreground">
@@ -45,7 +45,7 @@ export function ExperimentCard({ experiment, index, view = "cards" }: Experiment
       ) : (
         <>
           <div>
-            <h3 className="text-sm font-medium">{experiment.name}</h3>
+            <h3 className="traveling-link text-sm font-medium">{experiment.name}</h3>
             <p className="mt-1 max-w-[520px] text-xs leading-5 text-muted">
               {experiment.description}
             </p>

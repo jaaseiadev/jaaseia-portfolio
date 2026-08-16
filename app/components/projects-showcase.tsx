@@ -104,7 +104,13 @@ export function ProjectsShowcase({ profileImage, projects }: ProjectsShowcasePro
         </div>
       </div>
 
-      <div className={view === "list" ? "divide-y divide-border" : "grid gap-3 sm:grid-cols-2"}>
+      <div
+        className={
+          view === "list"
+            ? "focus-list divide-y divide-border"
+            : "focus-list grid gap-x-5 gap-y-8 sm:grid-cols-2"
+        }
+      >
         {visibleProjects.map((project, index) => (
           <ProjectCard
             key={project.name}

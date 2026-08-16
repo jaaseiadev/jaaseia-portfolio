@@ -29,7 +29,7 @@ export function ExperimentsShowcase({ experiments }: { experiments: Experiment[]
   return (
     <div>
       <CollectionHeader title="Crafts" view={view} onViewChange={setView} />
-      <div className={view === "cards" ? "grid gap-3 sm:grid-cols-2" : "divide-y divide-border"}>
+      <div className={view === "cards" ? "focus-list grid gap-3 sm:grid-cols-2" : "focus-list divide-y divide-border"}>
         {experiments.map((experiment, index) => (
           <ExperimentCard
             key={experiment.name}
@@ -49,7 +49,7 @@ export function EducationShowcase({ education }: { education: Education[] }) {
   return (
     <div>
       <CollectionHeader title="Education" view={view} onViewChange={setView} />
-      <div className={view === "cards" ? "grid gap-3 sm:grid-cols-2" : "divide-y divide-border"}>
+      <div className={view === "cards" ? "focus-list grid gap-3 sm:grid-cols-2" : "focus-list divide-y divide-border"}>
         {education.map((item) => (
           <EducationItem
             key={`${item.school}-${item.degree}`}
