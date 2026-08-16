@@ -19,25 +19,26 @@ export function ProjectCard({ project, index, view = "list" }: ProjectCardProps)
   const reduceMotion = useReducedMotion();
   const shouldAnimate = hydrated && !reduceMotion;
   const projectLinks = (
-    <div className="flex shrink-0 gap-3 text-xs font-medium">
-      <a
-        href={project.githubUrl}
-        target="_blank"
-        rel="noreferrer"
-        className="traveling-link text-muted transition-colors hover:text-foreground"
-      >
-        GitHub ↗
-      </a>
+    <div className="flex shrink-0 items-center gap-3 text-muted">
       <a
         href={project.liveUrl}
         target="_blank"
         rel="noreferrer"
-        className="traveling-link inline-flex gap-1 text-foreground"
+        aria-label={`Open ${project.name} live site`}
+        title="Live site"
+        className="transition-colors hover:text-foreground"
       >
-        Live site
-        <span className="transition-transform duration-200 group-hover:translate-x-1" aria-hidden="true">
-          →
-        </span>
+        <FiGlobe className="size-4" aria-hidden="true" />
+      </a>
+      <a
+        href={project.githubUrl}
+        target="_blank"
+        rel="noreferrer"
+        aria-label={`Open ${project.name} GitHub repository`}
+        title="GitHub repository"
+        className="transition-colors hover:text-foreground"
+      >
+        <SiGithub className="size-4" aria-hidden="true" />
       </a>
     </div>
   );
@@ -80,28 +81,7 @@ export function ProjectCard({ project, index, view = "list" }: ProjectCardProps)
               </Link>
             </h3>
 
-            <div className="flex shrink-0 items-center gap-3 text-muted">
-              <a
-                href={project.liveUrl}
-                target="_blank"
-                rel="noreferrer"
-                aria-label={`Open ${project.name} live site`}
-                title="Live site"
-                className="transition-colors hover:text-foreground"
-              >
-                <FiGlobe className="size-4" aria-hidden="true" />
-              </a>
-              <a
-                href={project.githubUrl}
-                target="_blank"
-                rel="noreferrer"
-                aria-label={`Open ${project.name} GitHub repository`}
-                title="GitHub repository"
-                className="transition-colors hover:text-foreground"
-              >
-                <SiGithub className="size-4" aria-hidden="true" />
-              </a>
-            </div>
+            {projectLinks}
           </div>
 
           <p className="mt-1.5 text-[12px] leading-[1.55] text-muted sm:text-[13px]">

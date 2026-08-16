@@ -1,4 +1,3 @@
-import { ArrowLink } from "@/app/components/arrow-link";
 import { GitHubIcon } from "@/app/components/icons";
 import { Reveal } from "@/app/components/reveal";
 import { getGitHubActivity } from "@/app/data/github";
@@ -40,7 +39,14 @@ export async function GitHubActivitySection({
               <GitHubIcon className="size-4" />
             </span>
             <div>
-              <p className="text-sm font-medium">{activity?.login ?? username}</p>
+              <a
+                href={activity?.profileUrl ?? profileUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="traveling-link text-sm font-medium"
+              >
+                {activity?.login ?? username}
+              </a>
               <p className="mt-0.5 text-xs text-faint">Last 365 days</p>
             </div>
           </div>
@@ -86,19 +92,13 @@ export async function GitHubActivitySection({
               ))}
             </div>
 
-            <div className="mt-4 flex items-center justify-between gap-4">
+            <div className="mt-4">
               <p className="text-[11px] text-faint">Less to more activity</p>
-              <ArrowLink href={activity.profileUrl} external>
-                View GitHub profile
-              </ArrowLink>
             </div>
           </>
         ) : (
-          <div className="flex flex-col gap-3 pt-5 sm:flex-row sm:items-center sm:justify-between">
+          <div className="pt-5">
             <p className="text-sm text-muted">Contribution data is unavailable right now.</p>
-            <ArrowLink href={profileUrl} external>
-              View GitHub profile
-            </ArrowLink>
           </div>
         )}
       </div>
