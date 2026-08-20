@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { MotionProvider } from "@/app/components/motion-provider";
 import { PageTransition } from "@/app/components/page-transition";
 import { SiteFooter } from "@/app/components/site-footer";
 import { SiteHeader } from "@/app/components/site-header";
@@ -40,11 +41,13 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
       <body>
-        <div className="min-h-screen bg-background text-foreground selection:bg-foreground selection:text-background">
-          <SiteHeader />
-          <PageTransition>{children}</PageTransition>
-          <SiteFooter />
-        </div>
+        <MotionProvider>
+          <div className="min-h-screen bg-background text-foreground selection:bg-foreground selection:text-background">
+            <SiteHeader />
+            <PageTransition>{children}</PageTransition>
+            <SiteFooter />
+          </div>
+        </MotionProvider>
       </body>
     </html>
   );
