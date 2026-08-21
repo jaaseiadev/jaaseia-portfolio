@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { AnimatePresence, motion, useReducedMotionConfig } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { ThemeToggle } from "@/app/components/theme-toggle";
+import { portfolio } from "@/app/data/portfolio";
 
 const workLinks = [
   { label: "Uses", href: "/uses" },
@@ -254,7 +255,7 @@ export function SiteHeader() {
                 </Link>
               ))}
               <a
-                href="/resume.pdf"
+                href={portfolio.resumeUrl}
                 download
                 role="menuitem"
                 tabIndex={extrasOpen ? 0 : -1}
