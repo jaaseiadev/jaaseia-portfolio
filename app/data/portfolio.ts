@@ -58,6 +58,9 @@ export type Experience = {
 
 export const portfolio = {
   name: "Jaaseia Gian R. Abenoja",
+  firstName: "Jaaseia",
+  remainingName: "Gian R. Abenoja",
+  jobTitle: "Frontend Developer & Designer",
   initials: "JA",
   metaDescription:
     "Portfolio of Jaaseia Gian R. Abenoja, a computer science student and frontend developer focused on thoughtful web experiences and AI.",
