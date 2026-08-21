@@ -56,6 +56,14 @@ export type Experience = {
   url: string;
 };
 
+export type Certificate = {
+  title: string;
+  issuer: string;
+  completedOn: string;
+  duration: string;
+  url: string;
+};
+
 export const portfolio = {
   name: "Jaaseia Gian R. Abenoja",
   firstName: "Jaaseia",
@@ -259,6 +267,15 @@ export const portfolio = {
       url: "https://www.linkedin.com/in/jaaseia/edit/forms/position/2992359171/",
     },
   ] satisfies Experience[],
+  certificates: [
+    {
+      title: "Introduction to Python",
+      issuer: "DataCamp",
+      completedOn: "Aug 19, 2026",
+      duration: "4 hours",
+      url: "/certificates/Introduction%20to%20python/certificate.pdf",
+    },
+  ] satisfies Certificate[],
   socials: [
     {
       label: "GitHub",
