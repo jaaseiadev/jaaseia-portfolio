@@ -1,9 +1,9 @@
+import Link from "next/link";
 import { GitHubIcon } from "@/app/components/icons";
 import { Reveal } from "@/app/components/reveal";
 import { getGitHubActivity } from "@/app/data/github";
 
 type GitHubActivityProps = {
-  email: string;
   profileUrl: string;
   resumeUrl: string;
   username: string;
@@ -27,7 +27,6 @@ const monthLabels = Array.from({ length: 12 }, (_, offset) =>
 );
 
 export async function GitHubActivitySection({
-  email,
   profileUrl,
   resumeUrl,
   username,
@@ -118,12 +117,9 @@ export async function GitHubActivitySection({
               Resume
             </a>{" "}
             or{" "}
-            <a
-              href={`mailto:${email}`}
-              className="traveling-link font-medium text-foreground"
-            >
+            <Link href="/contact" className="traveling-link font-medium text-foreground">
               send an email
-            </a>
+            </Link>
             .
           </p>
         </div>
