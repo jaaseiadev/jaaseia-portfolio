@@ -23,7 +23,9 @@ export default function Home() {
         />
 
         <GitHubActivitySection
+          email={portfolio.email}
           profileUrl={portfolio.github}
+          resumeUrl={portfolio.resumeUrl}
           username={portfolio.githubUsername}
         />
 
