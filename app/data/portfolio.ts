@@ -56,17 +56,28 @@ export type Experience = {
   url: string;
 };
 
+export type Certificate = {
+  title: string;
+  issuer: string;
+  date: string;
+  duration?: string;
+  url: string;
+};
+
 export const portfolio = {
   name: "Jaaseia Gian R. Abenoja",
+  firstName: "Jaaseia",
+  remainingName: "Gian R. Abenoja",
+  jobTitle: "Frontend Developer & Designer",
   initials: "JA",
   metaDescription:
     "Portfolio of Jaaseia Gian R. Abenoja, a computer science student and frontend developer focused on thoughtful web experiences and AI.",
   introduction:
-    "I'm a fourth-year Computer Science student at Visayas State University, passionate about frontend engineering, artificial intelligence, and crafting thoughtful digital experiences.",
+    "I'm passionate about frontend engineering, artificial intelligence, and crafting thoughtful digital experiences.",
   availability: "Open to opportunities",
   profileImage: "/profile.jpg",
   email: "jaaseiacocabenoja@gmail.com",
-  resumeUrl: "#education",
+  resumeUrl: "/resume/jaaseia-resume.pdf",
   githubUsername: "jaaseiadev",
   github: "https://github.com/jaaseiadev",
   linkedin: "https://linkedin.com/in/jaaseia",
@@ -256,6 +267,21 @@ export const portfolio = {
       url: "https://www.linkedin.com/in/jaaseia/edit/forms/position/2992359171/",
     },
   ] satisfies Experience[],
+  certificates: [
+    {
+      title: "Introduction to Python",
+      issuer: "DataCamp",
+      date: "Completed Aug 19, 2026",
+      duration: "4 hours",
+      url: "/certificates/Introduction%20to%20python/certificate.pdf",
+    },
+    {
+      title: "Introduction to Data Science",
+      issuer: "Cisco",
+      date: "Issued Sep 2025",
+      url: "https://www.credly.com/badges/d6e138b7-ed95-40df-ab90-fc73ca2b222d/linked_in_profile",
+    },
+  ] satisfies Certificate[],
   socials: [
     {
       label: "GitHub",
