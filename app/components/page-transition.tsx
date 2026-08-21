@@ -11,6 +11,10 @@ export function PageTransition({ children }: { children: ReactNode }) {
   const reduceMotion = useReducedMotion();
   const shouldAnimate = hydrated && !reduceMotion;
 
+  if (pathname === "/") {
+    return <div>{children}</div>;
+  }
+
   return (
     <motion.div
       key={`${pathname}-${hydrated ? "hydrated" : "server"}`}
