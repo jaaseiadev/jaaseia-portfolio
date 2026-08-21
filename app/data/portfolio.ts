@@ -73,7 +73,7 @@ export const portfolio = {
   metaDescription:
     "Portfolio of Jaaseia Gian R. Abenoja, a computer science student and frontend developer focused on thoughtful web experiences and AI.",
   introduction:
-    "I'm a fourth-year Computer Science student at Visayas State University, passionate about frontend engineering, artificial intelligence, and crafting thoughtful digital experiences.",
+    "I'm passionate about frontend engineering, artificial intelligence, and crafting thoughtful digital experiences.",
   availability: "Open to opportunities",
   profileImage: "/profile.jpg",
   email: "jaaseiacocabenoja@gmail.com",
