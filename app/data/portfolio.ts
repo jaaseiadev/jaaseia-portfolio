@@ -59,8 +59,8 @@ export type Experience = {
 export type Certificate = {
   title: string;
   issuer: string;
-  completedOn: string;
-  duration: string;
+  date: string;
+  duration?: string;
   url: string;
 };
 
@@ -271,9 +271,15 @@ export const portfolio = {
     {
       title: "Introduction to Python",
       issuer: "DataCamp",
-      completedOn: "Aug 19, 2026",
+      date: "Completed Aug 19, 2026",
       duration: "4 hours",
       url: "/certificates/Introduction%20to%20python/certificate.pdf",
+    },
+    {
+      title: "Introduction to Data Science",
+      issuer: "Cisco",
+      date: "Issued Sep 2025",
+      url: "https://www.credly.com/badges/d6e138b7-ed95-40df-ab90-fc73ca2b222d/linked_in_profile",
     },
   ] satisfies Certificate[],
   socials: [

@@ -24,7 +24,8 @@ export default function CertificatesPage() {
                   {certificate.title}
                 </h2>
                 <p className="mt-1 text-xs leading-5 text-faint">
-                  {certificate.issuer} · {certificate.completedOn} · {certificate.duration}
+                  {certificate.issuer} · {certificate.date}
+                  {certificate.duration ? ` · ${certificate.duration}` : null}
                 </p>
               </div>
 
@@ -35,7 +36,7 @@ export default function CertificatesPage() {
                 className="traveling-link shrink-0 text-xs text-muted transition-colors hover:text-foreground"
                 aria-label={`View ${certificate.title} certificate`}
               >
-                View certificate ↗
+                View credential ↗
               </a>
             </article>
           ))}
