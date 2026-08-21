@@ -77,7 +77,7 @@ export const portfolio = {
   availability: "Open to opportunities",
   profileImage: "/profile.jpg",
   email: "jaaseiacocabenoja@gmail.com",
-  resumeUrl: "#education",
+  resumeUrl: "/resume/jaaseia-resume.pdf",
   githubUsername: "jaaseiadev",
   github: "https://github.com/jaaseiadev",
   linkedin: "https://linkedin.com/in/jaaseia",
