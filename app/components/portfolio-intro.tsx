@@ -174,9 +174,9 @@ export function PortfolioIntro({
   return (
     <LayoutGroup id="portfolio-profile-intro">
       <section className="pb-4 pt-5 sm:pt-8">
-        <div className="mb-6 flex items-center justify-between gap-4">
+        <div className="mb-6 flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
           <div
-            className={`relative flex min-w-0 items-center gap-3.5 ${
+            className={`relative flex w-full min-w-0 items-center gap-3.5 sm:w-auto ${
               curtainVisible && phase === "profile" ? "z-[60]" : ""
             }`}
           >
@@ -219,7 +219,7 @@ export function PortfolioIntro({
                         delay: playIntro ? 0.58 : 0,
                         ease: curtainEase,
                       }}
-                      className="truncate"
+                      className="min-w-0"
                     >
                       {remainingName}
                     </motion.span>
@@ -232,7 +232,7 @@ export function PortfolioIntro({
                       delay: playIntro ? 0.64 : 0,
                       ease: curtainEase,
                     }}
-                    className="mt-0.5 truncate text-[11px] text-muted sm:text-xs"
+                    className="mt-0.5 text-[11px] text-muted sm:text-xs"
                   >
                     {jobTitle}
                   </motion.p>
@@ -241,7 +241,7 @@ export function PortfolioIntro({
             </div>
           </div>
 
-          <div className="flex shrink-0 items-center gap-2 rounded-full border border-border bg-surface px-2.5 py-1 text-[10px] text-muted">
+          <div className="flex shrink-0 self-end items-center gap-2 rounded-full border border-border bg-surface px-2.5 py-1 text-[10px] text-muted sm:self-auto">
             <span className="size-1.5 rounded-full bg-emerald-500" aria-hidden="true" />
             {availability}
           </div>
