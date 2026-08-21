@@ -1,9 +1,11 @@
+import Link from "next/link";
 import { GitHubIcon } from "@/app/components/icons";
 import { Reveal } from "@/app/components/reveal";
 import { getGitHubActivity } from "@/app/data/github";
 
 type GitHubActivityProps = {
   profileUrl: string;
+  resumeUrl: string;
   username: string;
 };
 
@@ -26,6 +28,7 @@ const monthLabels = Array.from({ length: 12 }, (_, offset) =>
 
 export async function GitHubActivitySection({
   profileUrl,
+  resumeUrl,
   username,
 }: GitHubActivityProps) {
   const activity = await getGitHubActivity(username);
@@ -101,6 +104,25 @@ export async function GitHubActivitySection({
             <p className="text-sm text-muted">Contribution data is unavailable right now.</p>
           </div>
         )}
+
+        <div className="mt-5 border-t border-border pt-4">
+          <p className="text-sm leading-6 text-muted">
+            Interested in working together? Check out my{" "}
+            <a
+              href={resumeUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="traveling-link font-medium text-foreground"
+            >
+              Resume
+            </a>{" "}
+            or{" "}
+            <Link href="/contact" className="traveling-link font-medium text-foreground">
+              send an email
+            </Link>
+            .
+          </p>
+        </div>
       </div>
     </Reveal>
   );
