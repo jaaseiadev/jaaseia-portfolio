@@ -2,9 +2,10 @@
 
 import { LayoutGroup, motion } from "framer-motion";
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 
-type IntroPhase = "pending" | "greetings" | "identity" | "profile";
+type IntroPhase = "loading" | "greetings" | "identity" | "profile";
 
 type PortfolioIntroProps = {
   availability: string;
@@ -73,7 +74,7 @@ export function PortfolioIntro({
   profileImage,
   remainingName,
 }: PortfolioIntroProps) {
-  const [phase, setPhase] = useState<IntroPhase>("pending");
+  const [phase, setPhase] = useState<IntroPhase>("loading");
   const [greetingIndex, setGreetingIndex] = useState(0);
   const [playIntro, setPlayIntro] = useState(false);
   const [curtainVisible, setCurtainVisible] = useState(true);
@@ -83,6 +84,7 @@ export function PortfolioIntro({
   const sharedTransition = playIntro
     ? { layout: { duration: 0.65, ease: sharedLayoutEase } }
     : { layout: { duration: 0 } };
+  const profileVisible = phase === "loading" || phase === "profile";
 
   useEffect(() => {
     if (decisionRef.current === null) {
@@ -111,9 +113,8 @@ export function PortfolioIntro({
     }
 
     setPlayIntro(true);
-    setPhase((currentPhase) =>
-      currentPhase === "pending" ? "greetings" : currentPhase,
-    );
+    setCurtainVisible(true);
+    setPhase("greetings");
 
     preloadPromiseRef.current ??= preloadProfileImage(profileImage);
     restoreScrollRef.current?.();
@@ -163,13 +164,79 @@ export function PortfolioIntro({
     };
   }, [phase]);
 
-  const finishIntro = () => {
+  const finishIntro = useCallback(() => {
     if (phase !== "profile") return;
 
     setCurtainVisible(false);
     restoreScrollRef.current?.();
     restoreScrollRef.current = null;
-  };
+  }, [phase]);
+
+  useEffect(() => {
+    if (!curtainVisible || phase !== "profile") return;
+
+    const failSafe = window.setTimeout(finishIntro, 1400);
+    return () => window.clearTimeout(failSafe);
+  }, [curtainVisible, finishIntro, phase]);
+
+  const curtain = curtainVisible ? (
+    <div
+      className="pointer-events-none fixed inset-0 z-50 overflow-hidden text-foreground"
+      data-intro-phase={phase}
+      aria-hidden="true"
+    >
+      <motion.div
+        className="absolute inset-0 bg-background"
+        initial={false}
+        animate={{ y: phase === "profile" ? "-100%" : "0%" }}
+        transition={{
+          duration: phase === "profile" ? 0.28 : 0,
+          delay: phase === "profile" ? 0.78 : 0,
+          ease: curtainEase,
+        }}
+        onAnimationComplete={finishIntro}
+      />
+
+      {phase === "greetings" && (
+        <div className="absolute inset-0 z-10 flex items-center justify-center px-5 text-center">
+          <div className="inline-flex items-center justify-center gap-3 text-[24px] font-normal tracking-[-0.025em]">
+            <span className="size-1.5 shrink-0 rounded-full bg-foreground" />
+            <span>{greetings[greetingIndex]}</span>
+          </div>
+        </div>
+      )}
+
+      {phase === "identity" && (
+        <div className="absolute inset-0 z-10 flex items-center justify-center px-5 text-center">
+          <div className="flex items-center justify-center gap-3 whitespace-nowrap text-[24px] font-normal tracking-[-0.025em]">
+            <span>I’m</span>
+            <motion.div
+              layoutId="portfolio-profile-avatar"
+              transition={sharedTransition}
+              className="size-[38px] overflow-hidden rounded-full border border-border bg-surface"
+              style={{ borderRadius: 9999 }}
+            >
+              <Image
+                src={profileImage}
+                alt=""
+                width={76}
+                height={76}
+                priority
+                className="size-full object-cover grayscale"
+              />
+            </motion.div>
+            <motion.span
+              layoutId="portfolio-profile-name"
+              transition={sharedTransition}
+              className="inline-block"
+            >
+              {firstName}
+            </motion.span>
+          </div>
+        </div>
+      )}
+    </div>
+  ) : null;
 
   return (
     <LayoutGroup id="portfolio-profile-intro">
@@ -181,7 +248,7 @@ export function PortfolioIntro({
             }`}
           >
             <div className="size-12 shrink-0 sm:size-14">
-              {phase === "profile" && (
+              {profileVisible && (
                 <motion.div
                   layoutId="portfolio-profile-avatar"
                   transition={sharedTransition}
@@ -201,7 +268,7 @@ export function PortfolioIntro({
             </div>
 
             <div className="min-w-0">
-              {phase === "profile" && (
+              {profileVisible && (
                 <>
                   <h1 className="flex min-w-0 items-baseline gap-[0.3em] text-sm font-normal tracking-[-0.01em] sm:text-[15px]">
                     <motion.span
@@ -252,64 +319,11 @@ export function PortfolioIntro({
         </p>
       </section>
 
-      {curtainVisible && (
-        <div
-          className="pointer-events-none fixed inset-0 z-50"
-          data-intro-phase={phase}
-          aria-hidden="true"
-        >
-          <motion.div
-            className="absolute inset-0 bg-background"
-            initial={false}
-            animate={{ y: phase === "profile" ? "-100%" : "0%" }}
-            transition={{
-              duration: phase === "profile" ? 0.28 : 0,
-              delay: phase === "profile" ? 0.78 : 0,
-              ease: curtainEase,
-            }}
-            onAnimationComplete={finishIntro}
-          />
-
-          {phase === "greetings" && (
-            <div className="absolute inset-0 z-10 grid place-items-center px-5">
-              <div className="grid w-[190px] grid-cols-[0.4rem_1fr] items-center gap-3 text-[24px] font-normal tracking-[-0.025em] sm:w-[210px]">
-                <span className="size-1.5 rounded-full bg-foreground" />
-                <span>{greetings[greetingIndex]}</span>
-              </div>
-            </div>
-          )}
-
-          {phase === "identity" && (
-            <div className="absolute inset-0 z-10 grid place-items-center px-5">
-              <div className="flex items-center justify-center gap-3 whitespace-nowrap text-[24px] font-normal tracking-[-0.025em]">
-                <span>I’m</span>
-                <motion.div
-                  layoutId="portfolio-profile-avatar"
-                  transition={sharedTransition}
-                  className="size-[38px] overflow-hidden rounded-full border border-border bg-surface"
-                  style={{ borderRadius: 9999 }}
-                >
-                  <Image
-                    src={profileImage}
-                    alt=""
-                    width={76}
-                    height={76}
-                    priority
-                    className="size-full object-cover grayscale"
-                  />
-                </motion.div>
-                <motion.span
-                  layoutId="portfolio-profile-name"
-                  transition={sharedTransition}
-                  className="inline-block"
-                >
-                  {firstName}
-                </motion.span>
-              </div>
-            </div>
-          )}
-        </div>
-      )}
+      {curtain &&
+        (phase === "loading" ? curtain : createPortal(curtain, document.body))}
+      <noscript>
+        <style>{`[data-intro-phase="loading"] { display: none; }`}</style>
+      </noscript>
     </LayoutGroup>
   );
 }
