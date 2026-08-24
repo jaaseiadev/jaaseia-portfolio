@@ -3,7 +3,6 @@
 import { LayoutGroup, motion } from "framer-motion";
 import Image from "next/image";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { createPortal } from "react-dom";
 
 type IntroPhase = "loading" | "greetings" | "identity" | "profile";
 
@@ -82,8 +81,8 @@ export function PortfolioIntro({
   const preloadPromiseRef = useRef<Promise<void> | null>(null);
   const restoreScrollRef = useRef<(() => void) | null>(null);
   const sharedTransition = playIntro
-    ? { layout: { duration: 0.65, ease: sharedLayoutEase } }
-    : { layout: { duration: 0 } };
+    ? { layout: { duration: 0.65, ease: sharedLayoutEase, type: "tween" as const } }
+    : { layout: { duration: 0, type: "tween" as const } };
   const profileVisible = phase === "loading" || phase === "profile";
 
   useEffect(() => {
@@ -180,25 +179,27 @@ export function PortfolioIntro({
   }, [curtainVisible, finishIntro, phase]);
 
   const curtain = curtainVisible ? (
-    <div
-      className="pointer-events-none fixed inset-0 z-50 overflow-hidden text-foreground"
-      data-intro-phase={phase}
-      aria-hidden="true"
-    >
+    <>
       <motion.div
-        className="absolute inset-0 bg-background"
+        className="fixed -inset-1 z-50 touch-none bg-background will-change-transform"
+        data-intro-phase={phase}
+        aria-hidden="true"
         initial={false}
         animate={{ y: phase === "profile" ? "-100%" : "0%" }}
         transition={{
           duration: phase === "profile" ? 0.28 : 0,
           delay: phase === "profile" ? 0.78 : 0,
           ease: curtainEase,
+          type: "tween",
         }}
         onAnimationComplete={finishIntro}
       />
 
       {phase === "greetings" && (
-        <div className="absolute inset-0 z-10 flex items-center justify-center px-5 text-center">
+        <div
+          className="pointer-events-none fixed inset-0 z-[51] flex items-center justify-center px-5 text-center text-foreground"
+          aria-hidden="true"
+        >
           <div className="inline-flex items-center justify-center gap-3 text-[24px] font-normal tracking-[-0.025em]">
             <span className="size-1.5 shrink-0 rounded-full bg-foreground" />
             <span>{greetings[greetingIndex]}</span>
@@ -207,7 +208,10 @@ export function PortfolioIntro({
       )}
 
       {phase === "identity" && (
-        <div className="absolute inset-0 z-10 flex items-center justify-center px-5 text-center">
+        <div
+          className="pointer-events-none fixed inset-0 z-[51] flex items-center justify-center px-5 text-center text-foreground"
+          aria-hidden="true"
+        >
           <div className="flex items-center justify-center gap-3 whitespace-nowrap text-[24px] font-normal tracking-[-0.025em]">
             <span>I’m</span>
             <motion.div
@@ -235,7 +239,7 @@ export function PortfolioIntro({
           </div>
         </div>
       )}
-    </div>
+    </>
   ) : null;
 
   return (
@@ -319,8 +323,7 @@ export function PortfolioIntro({
         </p>
       </section>
 
-      {curtain &&
-        (phase === "loading" ? curtain : createPortal(curtain, document.body))}
+      {curtain}
       <noscript>
         <style>{`[data-intro-phase="loading"] { display: none; }`}</style>
       </noscript>
