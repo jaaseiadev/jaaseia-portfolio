@@ -14,6 +14,7 @@
   --contribution-2: #a0a09a;
   --contribution-3: #62625e;
   --contribution-4: #1d1d1c;
+  --footer-wordmark: color-mix(in srgb, var(--foreground) 9%, transparent);
 }
 
 .dark {
@@ -28,6 +29,7 @@
   --contribution-2: #73736e;
   --contribution-3: #aaa9a3;
   --contribution-4: #f1f1ed;
+  --footer-wordmark: color-mix(in srgb, var(--foreground) 11%, transparent);
 }
 
 @theme inline {
@@ -274,6 +276,13 @@ a:hover .traveling-link::after,
 
 .section-shell {
   padding-block: 2rem 0;
+}
+
+.footer-wordmark {
+  aspect-ratio: 645 / 98;
+  background: var(--footer-wordmark);
+  -webkit-mask: url("/text-1788536538123.png") center / contain no-repeat;
+  mask: url("/text-1788536538123.png") center / contain no-repeat;
 }
 
 .contact-field {

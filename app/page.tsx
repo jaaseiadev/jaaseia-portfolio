@@ -13,7 +13,6 @@ export default function Home() {
   return (
     <main id="top" className="mx-auto w-full max-w-[680px] px-5 sm:px-8">
         <PortfolioIntro
-          availability={portfolio.availability}
           firstName={portfolio.firstName}
           fullName={portfolio.name}
           introduction={portfolio.introduction}
