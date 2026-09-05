@@ -187,18 +187,17 @@ export function PortfolioIntro({
   profileImage,
   remainingName,
 }: PortfolioIntroProps) {
-  const [mode, setMode] = useState<IntroMode>(
-    introHasPlayedInMemory ? "skip" : "pending",
-  );
+  // Keep the server and first client render identical and readable before hydration.
+  const [mode, setMode] = useState<IntroMode>("pending");
   const [phase, setPhase] = useState<IntroPhase>("greetings");
   const [greetingIndex, setGreetingIndex] = useState(0);
   const [isIntroComplete, setIsIntroComplete] = useState(false);
   const hasDecidedRef = useRef(false);
   const shouldReduceMotion = useReducedMotion();
-  const shouldPlayIntro = mode === "play" && !shouldReduceMotion;
+  const shouldPlayIntro =
+    mode === "play" && !shouldReduceMotion && !isIntroComplete;
   const visiblePhase = shouldPlayIntro ? phase : "profile";
-  const shouldLockScroll =
-    mode === "pending" || (shouldPlayIntro && !isIntroComplete);
+  const shouldLockScroll = shouldPlayIntro;
 
   useLockPageScroll(shouldLockScroll);
 
@@ -219,12 +218,6 @@ export function PortfolioIntro({
     }
 
     introHasPlayedInMemory = true;
-
-    try {
-      window.sessionStorage.setItem(introSessionKey, "true");
-    } catch {
-      // The in-memory flag still prevents repeats during client navigation.
-    }
 
     queueMicrotask(() => setMode("play"));
   }, []);
@@ -253,33 +246,36 @@ export function PortfolioIntro({
     };
   }, [shouldPlayIntro]);
 
-  const finishIntro = useCallback(() => setIsIntroComplete(true), []);
+  const finishIntro = useCallback(() => {
+    setIsIntroComplete(true);
+
+    try {
+      window.sessionStorage.setItem(introSessionKey, "true");
+    } catch {
+      // The in-memory flag still prevents repeats during client navigation.
+    }
+  }, []);
 
   useEffect(() => {
-    if (!shouldPlayIntro || visiblePhase !== "profile" || isIntroComplete) {
-      return;
-    }
+    if (!shouldPlayIntro) return;
 
+    // Cover the entire sequence, and unmount the curtain even if Motion never
+    // reports its exit. A scroll unlock alone can leave an opaque cover behind.
     const failSafe = window.setTimeout(
       finishIntro,
-      (curtainDelaySeconds + curtainDurationSeconds) * 1000 + 400,
+      greetings.length * greetingDurationMs +
+        identityHoldMs +
+        (curtainDelaySeconds + curtainDurationSeconds) * 1000 +
+        400,
     );
 
     return () => window.clearTimeout(failSafe);
-  }, [finishIntro, isIntroComplete, shouldPlayIntro, visiblePhase]);
+  }, [finishIntro, shouldPlayIntro]);
 
   return (
     <MotionConfig reducedMotion="user">
       <LayoutGroup id="portfolio-profile-intro">
         <section className="pb-4 pt-5 sm:pt-8">
-          {mode === "pending" ? (
-            <div
-              data-intro-pending=""
-              aria-hidden="true"
-              className="pointer-events-auto fixed -inset-1 z-[70] touch-none bg-background"
-            />
-          ) : null}
-
           {shouldPlayIntro && visiblePhase !== "profile" ? (
             <Image
               src={profileImage}
@@ -292,7 +288,7 @@ export function PortfolioIntro({
             />
           ) : null}
 
-          {mode === "play" ? (
+          {shouldPlayIntro ? (
             <AnimatePresence initial={false} onExitComplete={finishIntro}>
               {visiblePhase === "profile" ? null : (
                 <motion.div
@@ -366,10 +362,6 @@ export function PortfolioIntro({
             {introduction}
           </p>
         </section>
-
-        <noscript>
-          <style>{`[data-intro-pending] { display: none !important; }`}</style>
-        </noscript>
       </LayoutGroup>
     </MotionConfig>
   );

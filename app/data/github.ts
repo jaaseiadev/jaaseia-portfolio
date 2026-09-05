@@ -119,6 +119,7 @@ export async function getGitHubActivity(
         },
       }),
       next: { revalidate: 60 * 60 },
+      signal: AbortSignal.timeout(5000),
     });
 
     if (!response.ok) {

@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import {
   EducationShowcase,
 } from "@/app/components/collection-showcases";
@@ -21,11 +22,19 @@ export default function Home() {
           remainingName={portfolio.remainingName}
         />
 
-        <GitHubActivitySection
-          profileUrl={portfolio.github}
-          resumeUrl={portfolio.resumeUrl}
-          username={portfolio.githubUsername}
-        />
+        <Suspense
+          fallback={
+            <section aria-label="GitHub activity" aria-busy="true" className="py-5 sm:py-6">
+              <p role="status" className="text-sm text-muted">Loading GitHub activity…</p>
+            </section>
+          }
+        >
+          <GitHubActivitySection
+            profileUrl={portfolio.github}
+            resumeUrl={portfolio.resumeUrl}
+            username={portfolio.githubUsername}
+          />
+        </Suspense>
 
         <Reveal as="section" id="work" className="projects-section" delay={0.05}>
           <ProjectsShowcase
