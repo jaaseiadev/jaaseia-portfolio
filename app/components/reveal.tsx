@@ -26,7 +26,6 @@ export function Reveal({
 
   return (
     <Component
-      key={hydrated ? "hydrated" : "server"}
       id={id}
       className={className}
       initial={shouldAnimate ? { opacity: 0, y: 14 } : false}

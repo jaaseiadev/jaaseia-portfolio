@@ -187,7 +187,7 @@ export function PortfolioIntro({
   profileImage,
   remainingName,
 }: PortfolioIntroProps) {
-  // Keep the server and first client render identical and readable before hydration.
+  // Keep the server and first client render identical while deciding whether to play.
   const [mode, setMode] = useState<IntroMode>("pending");
   const [phase, setPhase] = useState<IntroPhase>("greetings");
   const [greetingIndex, setGreetingIndex] = useState(0);
@@ -276,6 +276,17 @@ export function PortfolioIntro({
     <MotionConfig reducedMotion="user">
       <LayoutGroup id="portfolio-profile-intro">
         <section className="pb-4 pt-5 sm:pt-8">
+          {mode === "pending" ? (
+            <div
+              data-intro-pending=""
+              aria-hidden="true"
+              className="intro-pending pointer-events-none fixed -inset-1 z-50 flex items-center justify-center gap-3 bg-background px-5 text-center text-2xl font-normal tracking-[-0.025em] text-foreground"
+            >
+              <span className="size-1.5 shrink-0 rounded-full bg-current" />
+              <span>{greetings[0]}</span>
+            </div>
+          ) : null}
+
           {shouldPlayIntro && visiblePhase !== "profile" ? (
             <Image
               src={profileImage}

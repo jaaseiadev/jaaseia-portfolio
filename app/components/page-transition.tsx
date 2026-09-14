@@ -17,7 +17,7 @@ export function PageTransition({ children }: { children: ReactNode }) {
 
   return (
     <motion.div
-      key={`${pathname}-${hydrated ? "hydrated" : "server"}`}
+      key={pathname}
       initial={
         shouldAnimate
           ? { opacity: 0, filter: "blur(12px)", y: 8, scale: 0.995 }
