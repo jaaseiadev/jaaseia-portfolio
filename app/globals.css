@@ -495,13 +495,3 @@ a:hover .traveling-link::after,
     animation-iteration-count: 1 !important;
   }
 }
-.intro-pending {
-  /* Reveal the readable page if hydration fails or JavaScript is unavailable. */
-  animation: dismiss-pending-intro 0s 4s forwards;
-}
-
-@keyframes dismiss-pending-intro {
-  to {
-    visibility: hidden;
-  }
-}

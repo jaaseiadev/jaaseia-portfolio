@@ -12,12 +12,11 @@ import {
   useCallback,
   useEffect,
   useLayoutEffect,
-  useRef,
   useState,
 } from "react";
+import { useHydrated } from "@/app/components/use-hydrated";
 
 type IntroPhase = "greetings" | "identity" | "profile";
-type IntroMode = "pending" | "play" | "skip";
 
 type PortfolioIntroProps = {
   firstName: string;
@@ -44,7 +43,6 @@ const greetings = [
   "Konnichiwa",
 ] as const;
 
-const introSessionKey = "portfolio-intro-played";
 const greetingDurationMs = 180;
 const identityHoldMs = 600;
 const curtainDelaySeconds = 0.78;
@@ -76,8 +74,6 @@ const roleTransition = {
   ...detailTransition,
   delay: detailTransition.delay + 0.06,
 } as const;
-
-let introHasPlayedInMemory = false;
 
 function useLockPageScroll(isLocked: boolean) {
   useLayoutEffect(() => {
@@ -187,40 +183,18 @@ export function PortfolioIntro({
   profileImage,
   remainingName,
 }: PortfolioIntroProps) {
-  // Keep the server and first client render identical while deciding whether to play.
-  const [mode, setMode] = useState<IntroMode>("pending");
+  // Render the readable profile until hydration can start the full animation.
+  const hydrated = useHydrated();
   const [phase, setPhase] = useState<IntroPhase>("greetings");
   const [greetingIndex, setGreetingIndex] = useState(0);
   const [isIntroComplete, setIsIntroComplete] = useState(false);
-  const hasDecidedRef = useRef(false);
   const shouldReduceMotion = useReducedMotion();
   const shouldPlayIntro =
-    mode === "play" && !shouldReduceMotion && !isIntroComplete;
+    hydrated && !shouldReduceMotion && !isIntroComplete;
   const visiblePhase = shouldPlayIntro ? phase : "profile";
   const shouldLockScroll = shouldPlayIntro;
 
   useLockPageScroll(shouldLockScroll);
-
-  useLayoutEffect(() => {
-    if (hasDecidedRef.current) return;
-    hasDecidedRef.current = true;
-
-    try {
-      introHasPlayedInMemory ||=
-        window.sessionStorage.getItem(introSessionKey) === "true";
-    } catch {
-      // Fall back to the in-memory flag when storage is unavailable.
-    }
-
-    if (introHasPlayedInMemory) {
-      queueMicrotask(() => setMode("skip"));
-      return;
-    }
-
-    introHasPlayedInMemory = true;
-
-    queueMicrotask(() => setMode("play"));
-  }, []);
 
   useEffect(() => {
     if (!shouldPlayIntro) return;
@@ -248,45 +222,12 @@ export function PortfolioIntro({
 
   const finishIntro = useCallback(() => {
     setIsIntroComplete(true);
-
-    try {
-      window.sessionStorage.setItem(introSessionKey, "true");
-    } catch {
-      // The in-memory flag still prevents repeats during client navigation.
-    }
   }, []);
-
-  useEffect(() => {
-    if (!shouldPlayIntro) return;
-
-    // Cover the entire sequence, and unmount the curtain even if Motion never
-    // reports its exit. A scroll unlock alone can leave an opaque cover behind.
-    const failSafe = window.setTimeout(
-      finishIntro,
-      greetings.length * greetingDurationMs +
-        identityHoldMs +
-        (curtainDelaySeconds + curtainDurationSeconds) * 1000 +
-        400,
-    );
-
-    return () => window.clearTimeout(failSafe);
-  }, [finishIntro, shouldPlayIntro]);
 
   return (
     <MotionConfig reducedMotion="user">
       <LayoutGroup id="portfolio-profile-intro">
         <section className="pb-4 pt-5 sm:pt-8">
-          {mode === "pending" ? (
-            <div
-              data-intro-pending=""
-              aria-hidden="true"
-              className="intro-pending pointer-events-none fixed -inset-1 z-50 flex items-center justify-center gap-3 bg-background px-5 text-center text-2xl font-normal tracking-[-0.025em] text-foreground"
-            >
-              <span className="size-1.5 shrink-0 rounded-full bg-current" />
-              <span>{greetings[0]}</span>
-            </div>
-          ) : null}
-
           {shouldPlayIntro && visiblePhase !== "profile" ? (
             <Image
               src={profileImage}
